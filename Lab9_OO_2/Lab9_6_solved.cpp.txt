@@ -1,0 +1,53 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+class Vector{
+    public:
+        double *data_;
+
+        Vector (double);
+        Vector (const Vector &Copy); //Copy constructor - declaration
+        ~Vector();
+
+        double add(Vector);
+
+};
+
+    Vector::Vector(double data)
+    :data_(new double){
+        *data_=data;
+    }
+
+    Vector::Vector(const Vector &Copy) //Copy constructor - definition
+    :data_(new double){
+        memcpy (data_, Copy.data_, sizeof(double));
+        //memcpy(...); need: #include <cstring>
+    }
+
+    Vector::~Vector(){
+        delete data_;
+    }
+
+double Vector::add(Vector arg){
+    return *data_+*(arg.data_);
+}
+
+int main()
+{
+    double x1, x2;
+
+    cout << "x1 = ";
+    cin >> x1;
+
+    cout << "x2 = ";
+    cin >> x2;
+
+    Vector a(x1);
+    Vector b(x2);
+
+    cout << "x1 + x2 = " << a.add(b) << endl;
+
+    return 0;
+}

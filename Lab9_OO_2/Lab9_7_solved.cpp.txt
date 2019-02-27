@@ -1,0 +1,111 @@
+#include <iostream>
+
+using namespace std;
+
+class CD{
+    protected:
+        size_t Size;
+        char *content_;
+        bool inside_;
+
+    public:
+        CD (void);
+        CD (char *);
+        ~CD (void);
+        void in_out(void);
+        void read(void);
+};
+
+    CD::CD(void)
+    :inside_(false){
+        Size = 10;
+        content_ = new char [Size];
+        }
+
+    CD::CD(char *content)
+    :inside_(false){
+        Size = 10;
+        content_ = new char [Size];
+
+        for (size_t i=0; i<Size; ++i){
+            content_[i]=content[i];
+        }
+    }
+
+    CD::~CD (void){
+        delete [] content_;
+    }
+
+void CD::in_out(void){
+    if (inside_ == false){
+        inside_ = true;
+    }
+
+    else{
+        inside_ = false;
+    }
+}
+
+void CD::read(void){
+    if (inside_ == true){
+        for (size_t i=0; i<Size; ++i){
+            cout << content_[i];
+        }
+    }
+
+    else cout << "There isn't cd's inside!";
+
+    cout << endl;
+}
+
+
+class CDRW:public CD{
+    public:
+        void write(char *);
+};
+
+void CDRW::write(char *new_cont){
+    if (inside_ == true){
+        for (size_t i=0; i<Size; ++i){
+            content_[i] = new_cont[i];
+        }
+    }
+}
+
+class BR:public CDRW{
+    public:
+        BR(void);
+};
+
+    BR::BR(void){
+        Size = 20;
+    }
+
+int main()
+{
+    char cd_content[10] = "Rand cont";
+    CD cd(cd_content);
+    cd.read();
+    cd.in_out();
+    cd.read();
+    cd.in_out();
+    cd.read();
+
+    cout << endl;
+
+    CDRW cdrw;
+    char write_content[10] = "Save cont";
+    cdrw.in_out();
+    cdrw.write(write_content);
+    cdrw.read();
+
+    cout << endl;
+
+    BR br;
+    char write_new_content[20] = "Save new content!!!";
+    br.in_out();
+    br.write(write_new_content);
+    br.read();
+
+    return 0;
+}

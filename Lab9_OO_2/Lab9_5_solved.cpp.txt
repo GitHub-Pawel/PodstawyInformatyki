@@ -1,0 +1,120 @@
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+class Vector_1{
+    public:
+        double *data_;
+
+        Vector_1 (double);
+        ~Vector_1();
+
+        double add(Vector_1 *);
+
+};
+
+    Vector_1::Vector_1(double data)
+    :data_(new double){
+        *data_=data;
+        cout << "Constructor - new addres: " << data_<< " - value: " << *data_ << endl;
+    }
+
+    Vector_1::~Vector_1(){
+        cout << "Destructor - delete address: " << data_ << " - value: " << *data_ << endl;
+
+        delete data_;
+    }
+
+double Vector_1::add(Vector_1 *arg){
+    return *data_+*(arg->data_);
+}
+
+
+
+class Vector_2{
+    public:
+        double *data_;
+
+        Vector_2 (double);
+        ~Vector_2();
+
+        double add(Vector_2 &);
+
+};
+
+    Vector_2::Vector_2(double data)
+    :data_(new double){
+        *data_=data;
+        cout << "Constructor - new addres: " << data_<< " - value: " << *data_ << endl;
+    }
+
+    Vector_2::~Vector_2(){
+        cout << "Destructor - delete address: " << data_ << " - value: " << *data_ << endl;
+
+        delete data_;
+    }
+
+double Vector_2::add(Vector_2 &arg){
+    return *data_+*(arg.data_);
+}
+
+
+
+class Vector_3{
+    public:
+        double *data_;
+
+        Vector_3 (double);
+        Vector_3 (const Vector_3 &Copy); //Copy constructor - declaration
+        ~Vector_3();
+
+        double add(Vector_3);
+
+};
+
+    Vector_3::Vector_3(double data)
+    :data_(new double){
+        *data_=data;
+        cout << "Constructor - new addres: " << data_<< " - value: " << *data_ << endl;
+    }
+
+    Vector_3::Vector_3(const Vector_3 &Copy) //Copy constructor - definition
+    :data_(new double){
+        memcpy (data_, Copy.data_, sizeof(double));
+        //memcpy(...); need: #include <cstring>
+
+        cout << "Copy constructor - new addres: " << data_<< " -  value: " << *data_ << endl;
+    }
+
+    Vector_3::~Vector_3(){
+        cout << "Destructor - delete address: " << data_ << " - value: " << *data_ << endl;
+
+        delete data_;
+    }
+
+double Vector_3::add(Vector_3 arg){
+    return *data_+*(arg.data_);
+}
+
+int main()
+{
+    cout << "Pointer:" << endl;
+    Vector_1 a_1(1.0);
+    Vector_1 b_1(2.0);
+    cout << "a_1 + b_1 = " << a_1.add(&b_1) << endl << endl;
+
+
+    cout << "Reference:" << endl;
+    Vector_2 a_2(3.0);
+    Vector_2 b_2(4.0);
+    cout << "a_2 + b_2 = " << a_2.add(b_2) << endl << endl;
+
+
+    cout << "Copy constructor:" << endl;
+    Vector_3 a_3(5.0);
+    Vector_3 b_3(6.0);
+    cout << "a_3 + b_3 = " << a_3.add(b_3) << endl << endl;
+
+    return 0;
+}

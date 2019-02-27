@@ -1,0 +1,165 @@
+#include <iostream>
+
+using namespace std;
+
+class Vec{
+    private:
+        double x_;
+        double y_;
+
+    public:
+        Vec(double, double);
+        Vec(void);
+        void setX(double);
+        void setY(double);
+        double getX(void);
+        double getY(void);
+        void add_one(void);
+};
+
+    Vec::Vec(double x, double y)
+    :x_(x), y_(y){
+    }
+
+    Vec::Vec(void){
+    }
+
+double Vec::getX(void){
+    return x_;
+}
+
+void Vec::setX(double x){
+    x_=x;
+}
+
+void Vec::setY(double y){
+    y_=y;
+}
+
+double Vec::getY(void){
+    return y_;
+}
+
+void Vec::add_one(void){
+    x_+=1.0;
+    y_+=1.0;
+}
+
+
+void print_1(Vec arg){
+    arg.add_one();
+    cout << "Print:" <<endl;
+    cout << "x = " << arg.getX() << endl;
+    cout << "y = " << arg.getY() << endl << endl;
+}
+
+
+void print_2(Vec *arg){
+    arg->add_one();
+    cout << "Print:" <<endl;
+    cout << "x = " << arg->getX() << endl;
+    cout << "y = " << arg->getY() << endl << endl;
+}
+
+void print_3(Vec &arg){
+    arg.add_one();
+    cout << "Print:" <<endl;
+    cout << "x = " << arg.getX() << endl;
+    cout << "y = " << arg.getY() << endl << endl;
+}
+
+
+/*
+void print_4(const Vec &arg){
+    arg.add_one();
+    cout << "Print:" <<endl;    //error: passing 'const Vec' as 'this' argument of 'void Vec::add_one()' discards qualifiers [-fpermissive]|
+    cout << "x = " << arg.getX() << endl;   //error: passing 'const Vec' as 'this' argument of 'double Vec::getX()' discards qualifiers [-fpermissive]|
+    cout << "y = " << arg.getY() << endl << endl;   //error: passing 'const Vec' as 'this' argument of 'double Vec::getY()' discards qualifiers [-fpermissive]|
+}
+//It isn't working because Vec &arg is const, so function add_one() can't modified variables x_ and y_.
+//Also it can't use getX() and getY() with the same reason.
+*/
+
+
+void print_table(Vec *tab, size_t &Siz){
+    for (size_t i=0; i<Siz; ++i){
+        tab->add_one();
+
+        cout << "x" << i+1 << " = " <<tab->getX();
+        cout << "   y" << i+1 << " = " <<tab->getY() <<endl;
+
+        ++tab;
+    }
+}
+
+int main()
+{
+    double x, y;
+    cin >> x >> y;
+    cout <<endl;
+
+
+    Vec Vector_1 (x, y);
+    cout << "Forwarding by copy:" <<endl;
+    cout << "Before:" << endl;
+    cout << "x = " << Vector_1.getX() << endl;
+    cout << "y = " << Vector_1.getY() << endl << endl;
+    print_1(Vector_1);
+    cout << "After:" << endl;
+    cout << "x = " << Vector_1.getX() << endl;
+    cout << "y = " << Vector_1.getY() << endl << endl << endl;
+
+
+    Vec Vector_2 (x, y);
+    cout << "Forwarding by pointer:" <<endl;
+    cout << "Before:" << endl;
+    cout << "x = " << Vector_2.getX() << endl;
+    cout << "y = " << Vector_2.getY() << endl << endl;
+    print_2(&Vector_2);
+    cout << "After:" << endl;
+    cout << "x = " << Vector_2.getX() << endl;
+    cout << "y = " << Vector_2.getY() << endl << endl << endl;
+
+
+    Vec Vector_3 (x, y);
+    cout << "Forwarding by reference:" <<endl;
+    cout << "Before:" << endl;
+    cout << "x = " << Vector_3.getX() << endl;
+    cout << "y = " << Vector_3.getY() << endl << endl;
+    print_3(Vector_3);
+    cout << "After:" << endl;
+    cout << "x = " << Vector_3.getX() << endl;
+    cout << "y = " << Vector_3.getY() << endl << endl << endl;
+
+
+/*
+    Vec Vector_4 (x, y);
+    cout << "Forwarding by constant reference:" <<endl;
+    cout << "Before:" << endl;
+    cout << "x = " << Vector_4.getX() << endl;
+    cout << "y = " << Vector_4.getY() << endl << endl;
+    print_4(Vector_4);
+    cout << "After:" << endl;
+    cout << "x = " << Vector_4.getX() << endl;
+    cout << "y = " << Vector_4.getY() << endl << endl << endl;
+*/
+cout << "====================================================" << endl;
+
+    size_t Size;
+    cin>>Size;
+
+    Vec table[Size];
+
+    for (size_t i=0; i<Size; ++i){
+        cin >> x >> y;
+        table[i].setX(x);
+        table[i].setY(y);
+    }
+
+    cout << endl;
+
+    print_table(table, Size);
+    //Forwarding by pointer to table and reference to Size
+
+    return 0;
+}

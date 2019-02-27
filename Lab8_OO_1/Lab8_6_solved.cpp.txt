@@ -1,0 +1,86 @@
+#include <iostream>
+using namespace std;
+
+class vector2d{
+	private:
+		float *table_;
+
+    public:
+        vector2d(void); //constructor - declaration
+
+        ~vector2d(void); //destructor - declaration
+
+        void set_x1 (float);
+        void set_x2 (float); //setters - declarations
+
+        float get_x1 (void);
+        float get_x2 (void); //getters - declarations
+
+		void print2d (void);
+		void add(vector2d &);
+};
+
+vector2d::vector2d(void) //constructor - definition
+:table_(new float[2]){
+}
+
+vector2d::~vector2d(void){ //destructor - definition
+    delete [] table_;
+}
+
+void vector2d::set_x1(float x1){
+    table_[0]=x1;
+}
+
+void vector2d::set_x2(float x2){ //setters - definitions
+    table_[1]=x2;
+}
+
+float vector2d::get_x1(void){
+    return table_[0];
+}
+
+float vector2d::get_x2(void){ //getters - definitions
+    return table_[1];
+}
+
+
+
+void vector2d::print2d (void){
+	cout << "x1 = " << get_x1() << endl;
+	//cout << "x1 = " << table_[0] << endl;
+
+	cout << "x2 = " << get_x2() << endl << endl;
+	//cout << "x2 = " << table_[1] << endl << endl;
+}
+
+void vector2d::add(vector2d &arg){
+	table_[0] += arg.get_x1();
+	//table_[0] += arg.table_[0];
+
+	table_[1] += arg.get_x2();
+	//table_[1] += arg.table_[1];
+}
+
+
+int main(){
+	vector2d vector_1;
+	float v1_x1, v1_x2;
+	cin >> v1_x1 >> v1_x2;
+	vector_1.set_x1(v1_x1);
+	vector_1.set_x2(v1_x2);
+	vector_1.print2d();
+
+	vector2d vector_2;
+	float v2_x1, v2_x2;
+	cin >> v2_x1 >> v2_x2;
+	vector_2.set_x1(v2_x1);
+	vector_2.set_x2(v2_x2);
+	vector_2.print2d();
+
+	vector_2.add(vector_1);
+	vector_2.print2d();
+
+	return 0;
+}
+
